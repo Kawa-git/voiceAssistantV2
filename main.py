@@ -8,6 +8,7 @@ import os
 
 browser_path ='C://Program Files//Mozilla Firefox//firefox.exe %s'
 visual_studio_code_path = 'F:\\VisualStudioCode\\Code.exe'
+terminal_path = 'C:\\Windows\\System32\\cmd.exe'
 steam_path =None
 
 ClinteWolfram = wolframalpha.Client("487PW2-38VPTQHH4R")
@@ -17,7 +18,7 @@ outputWolfram =''
 #Pronounces the string which is passed to it
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id) #voices[0] is italian voice
+engine.setProperty('voice', voices[0].id) #voices[0] is italian voice, [1] english voice
 def speak(text):
     engine.say(text)
     engine.runAndWait()
@@ -31,13 +32,13 @@ def wishMe():
     hour = int(datetime.datetime.now().hour)
 
     if hour>=0 and hour <12:
-        speak("Good morning"+MASTER)
+        speak("Buon giorno"+MASTER)
     elif hour>=12 and hour<18:
-        speak("Good afternoon"+MASTER)
+        speak("Buon pomeriggio"+MASTER)
     else:
-        speak("Good evening"+MASTER)
+        speak("Buona Sera"+MASTER)
     
-    speak("I'm jarvis, how may I help you?")
+    speak("Sono Jarvis, come posso aiutarti?")
 
 def takeCommand():
     r=sr.Recognizer()
@@ -46,14 +47,14 @@ def takeCommand():
         audio = r.listen(source)
     try:
         print("Recognizing")
-        query = r.recognize_google(audio, language='en-us')
+        query = r.recognize_google(audio, language='it')
         print("user said:  "+query)
     except Exception as e:
         print("Say that again please")
         query=''
     return query.lower()
 
-
+wishMe()
 
 #Logic for executing tasks
 while True:
@@ -69,34 +70,44 @@ while True:
             except:
                 speak("Nothing found on wikipedia")
 
-        elif 'open firefox' in query or 'duckduckgo' in query:
+        elif 'firefox' in query or 'duckduckgo' in query:
             url = "https://duckduckgo.com/"
             webbrowser.get(browser_path).open(url)
 
-        elif 'open amazon' in query:
+        elif 'amazon' in query:
             url = "www.amazon.com"
             webbrowser.get(browser_path).open(url)
 
-        elif 'open netflix' in query:
+        elif 'netflix' in query:
             url = "https://www.netflix.com/browse"
             webbrowser.get(browser_path).open(url)
 
-        elif 'open youtube' in query:
+        elif 'youtube' in query:
             url = "https://youtube.com/"
             webbrowser.get(browser_path).open(url)
         
-        elif 'open whatsapp' in query:
+        elif 'whatsapp' in query:
             url = "https://web.whatsapp.com/"
             webbrowser.get(browser_path).open(url)
 
-        elif 'open code' in query or 'run code' in query or 'open visual studio code' in query or 'run visual studio code' in query:
+        elif 'apri code' in query or 'lancia could' in query or 'could' in query or 'visual studio' in query or 'cod' in query:
             try:
                 os.startfile(visual_studio_code_path)
             except:
-                say("i can't find the executable file")
+                say("Non trovo il file eseguibile")
 
-        elif 'open steam' in query or 'run steam' in query :
+        elif 'lancia steam' in query or 'steam' in query :
             try:
                 os.startfile(steam_path)
             except:
-                speak("i can't find the executable file")
+                speak("Non trovo il file eseguibile")
+            
+        elif 'terminale' in query or 'cmd' in query or'prompt' in query :
+            try:
+                os.startfile(terminal_path)
+            except:
+                speak("Non trovo il file eseguibile")
+
+        elif 'shutdown' in query:
+            speak('Arrivederci')
+            exit()
